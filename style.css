@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap");
+
+*{
+	margin: 0px;
+	font-family: "Roboto";
+}
+.bg-container {
+	background-image: url(todo.jpg);
+	background-size: cover;
+	height: 100vh;
+	color: White;
+	margin: 0;
+	padding-top: 18px;
+	border: 0;
+}
+.tasksCard{
+	width: 62%; 
+	background-color: #bbbdbb;
+	padding: 25px;
+	border-radius: 10px;
+	margin: 35px;
+}
+#tasksInput{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.add-btn{
+	height: 35px;
+	width: 75px;
+	border-radius: 15px;
+	margin: 8px;		
+	border:0 ;
+	color: white;
+	background-color: lightblue;
+}
+.add-btn:hover {
+	background-color: lightgreen;
+}
+#tasks-container{
+	background-color: #bbbdbb;
+	width: 62%;
+	padding: 25px;
+	border-radius: 10px;
+	margin: 35px;
+	max-height: 225px;
+	overflow: auto;
+}
+.save-button{
+	margin-left: 35px;
+	border: 0px;
+	color: black;
+	background-color: #fdb573;
+	height: 35px;
+	width: 75px;
+	border-radius: 15px;
+}
+.taskCon{
+	list-style-type: none;
+	display: flex;
+}
+.checkbox-st{
+	height: 20px;
+	width: 20px;
+	margin-top: 25px;
+    margin-right: 12px;
+}
+.task-div{
+	padding: 15px;
+	background-color: whitesmoke;
+	list-style-type: none;
+	margin: 8px;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	color: black;
+	flex-grow: 1;
+}
+
+.checked{
+	text-decoration: line-through;
+}

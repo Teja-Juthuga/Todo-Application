@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CURD Operations</title>
+    <script src="https://kit.fontawesome.com/5f59ca6ad3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <script type="text/javascript" src="script.js"></script> -->
+</head>
+<body>
+	<div class="bg-container">
+		<h1 style="text-align: center; font-family:'Roboto'; color:#ab5001;">Task Manager </h1>
+		<div class="tasksCard">
+			<h1 style="margin: 8px;"> Create Task </h1>
+			<div style="display: flex;"> 
+				<input type="text" name="tasksInput" id="tasksInput" placeholder="What needs to be done? ">
+				<button class="add-btn" id="addTaskButton">Add </button>
+			</div>
+		</div>
+		<ul id="tasks-container">
+			<h2 style="text-align: center;"> Tasks Need to be acomplished are here 👇</h2>
+		</ul>
+		<button class="save-button" id="saveTaskButton"> Save</button>
+	</div>
+<script>
+	task_array = getTasksFromLocalStorage();
+
+tasksContainerEl = document.getElementById("tasks-container") ;
+addTask = document.getElementById("addTaskButton"); 
+saveTaskButton = document.getElementById("saveTaskButton");
+
+let totalTasksCount = task_array.length
+
+addTask.onclick = function(){
+	addNewTask()
+}
+
+saveTaskButton.onclick = function(){
+	stringified_task_array = JSON.stringify(task_array);
+	localStorage.setItem("tasksArray", stringified_task_array) ; 
+}
+
+function getTasksFromLocalStorage(){
+	stringified_task_array = localStorage.getItem("tasksArray"); 
+	parsed_task_array = JSON.parse(stringified_task_array);
+
+	if (parsed_task_array === null) {
+		return [];
+	} 
+	else {
+		return parsed_task_array
+	}
+}
+
+function addNewTask(){
+	taskInputElement = document.getElementById('tasksInput'); 
+	taskInputValue = taskInputElement.value
+	if (taskInputValue == ""){
+		window.alert("Please Add New Task.") ;
+	}
+	else{
+		totalTasksCount = totalTasksCount + 1 ;
+		let newTask_array = {
+			id : totalTasksCount,
+			task_name : taskInputValue,
+			isChecked : false 
+		}
+		taskInputElement.value = "";
+		task_array.push(newTask_array);
+		createTask(newTask_array); 
+	}
+}
+
+function createTask(task){
+	tasksContainerEl = document.getElementById("tasks-container") ;
+
+	let taskId = "task" + task.id ; 
+	let checkboxId = "checkbox" + task.id ; 
+	let labelId  = "label" + task.id ; 
+
+	let taskCon = document.createElement("li");
+	taskCon.classList.add("taskCon");
+	taskCon.id = taskId ; 
+	tasksContainerEl.appendChild(taskCon)
+
+	let checkBoxEl = document.createElement("input") ; 
+	checkBoxEl.classList.add("checkbox-st")
+	checkBoxEl.type = "checkbox";
+	checkBoxEl.id = checkboxId;
+	checkBoxEl.checked = task.isChecked ; 
+	checkBoxEl.onclick = function(){
+		onClickStatusChange(checkboxId, labelId, taskId); 
+	}
+	taskCon.appendChild(checkBoxEl);
+
+	let taskDiv = document.createElement("div");
+	taskDiv.classList.add("task-div");
+	taskCon.appendChild(taskDiv);
+
+	let labelEl = document.createElement("label");
+	labelEl.setAttribute("for", checkboxId);
+	labelEl.id = labelId ;  
+	labelEl.textContent = task.task_name;
+	if (task.isChecked === true){
+		labelEl.classList.add("checked");
+	}
+	else{
+		labelEl.classList.remove("checked");
+	}
+	taskDiv.appendChild(labelEl);
+
+	let deleteIconContainer = document.createElement("div");
+  	deleteIconContainer.classList.add("delete-icon-container");
+ 	taskDiv.appendChild(deleteIconContainer);
+
+	let deleteIcon = document.createElement("i");
+	deleteIcon.classList.add("far", "fa-trash-alt", "delete-icon");
+	deleteIcon.onclick = function(){
+		deleteTask(taskId); 
+	}
+	deleteIconContainer.appendChild(deleteIcon);
+
+
+}
+
+
+function onClickStatusChange(checkboxId, labelId, taskId){
+	let checkBoxElement = document.getElementById(checkboxId) ;
+	let labelElement = document.getElementById(labelId);
+	labelElement.classList.toggle("checked") ; 
+
+	let taskObjectIndex = task_array.findIndex(function(each_task){
+		x = "task" + each_task.id ;
+		if ( x == taskId){
+			return true;
+		}
+		else {
+			return false; 
+		}
+	}) 
+
+	let taskObject = task_array[taskObjectIndex];
+	if (taskObject.isChecked == false){
+		taskObject.isChecked = true;
+	}
+	else{
+		taskObject.isChecked = false;
+	}
+
+
+	/* 		
+		Toggle
+		
+		if (checkBoxElement.checked === true){
+			labelElement.classList.add("checked") ;
+		} else {
+			labelElement.classList.remove("checked");
+		}
+
+	*/
+}
+
+function deleteTask(taskId){
+	let taskElement = document.getElementById(taskId) ; 
+	tasksContainerEl.removeChild(taskElement);
+	let indexElemenet = task_array.findIndex(function(each_task){
+		let eachTaskId = "task" + each_task.id
+		if (eachTaskId == taskId){
+			return true;
+		}
+		else {
+			return false;
+		}
+	})
+
+	task_array.splice(indexElemenet, 1);
+}
+
+
+for (let task of task_array){
+	createTask(task); 
+}
+
+</script>
+</body>
+</html>
